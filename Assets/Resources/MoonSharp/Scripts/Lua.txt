@@ -1,0 +1,22 @@
+function rotate (self, delta)
+  self._game_object.transform.Rotate(0, 0, self._speed * delta);
+end -- rotate
+
+function make (game_object, speed)
+  return 
+  {
+    _game_object = game_object;
+    _speed = speed;
+
+    --
+
+    rotate = rotate;
+  }
+end
+
+--
+
+return
+{
+  make = make;
+}

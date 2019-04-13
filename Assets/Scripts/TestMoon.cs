@@ -89,35 +89,14 @@ public class TestMoon : MonoBehaviour
   List<Script> _globalScripts = new List<Script>();
   private string _code;
 
-  public string LuaCode = @"
-local function rotate = function(self, delta)
-  self._game_object.transform.Rotate(0, 0, self._speed * delta);
-end -- rotate
-local make = function(game_object, speed)
-  return 
-  {
-    _game_object = game_object;
-    _speed = speed;
-
-    --
-
-    rotate = rotate;
-  }
-end
-
---
-
-return
-{
-  make = make;
-}";
-
   private Script LuaScript;
+  public GameObject LuaScriptTarget;
+  public DynValue Self;
 
   // Start is called before the first frame update
   void Start()
   {
-
+    UserData.RegisterType<GameObject>();
     UserData.RegisterType<Vector3>();
     UserData.RegisterType<Transform>();
     foreach (var rotateObject in RotateObjects)
@@ -138,13 +117,17 @@ return
     Debug.LogError(MoonCallUnity(7));
     MoonRotateTransform(Vector3.up, 7, transform);
 
-    LuaScript = new Script();
-    
-    
+
+    LuaScript = ScriptLoader.LoadUnity();
+    DynValue luaFactFunction = LuaScript.Globals.Get("make");
+    Self = LuaScript.Call(luaFactFunction, LuaScriptTarget,10.0f);
   }
 
   private void Update()
   {
+    DynValue luaFactFunction = LuaScript.Globals.Get("rotate");
+    LuaScript.Call(luaFactFunction, Self,Time.deltaTime);
+
     if (GlobalScripts)
     {
       foreach (var script in _globalScripts)
@@ -259,17 +242,7 @@ return
 
   private void LuaRotate(Vector3 axis, float angle, Transform target)
   {
-    Script script = new Script();
-
-    script.DoString(LuaCode);
-
-  
-
-    var s = new Script();
-
-    s.Globals["mytarget"] = target;
-    s.Globals["axis"] = axis;
-    s.Globals["angle"] = angle;
+    
     
   }
 }
