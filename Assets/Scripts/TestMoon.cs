@@ -91,6 +91,7 @@ public class TestMoon : MonoBehaviour
 
   private Script LuaScript;
   public GameObject LuaScriptTarget;
+  public GameObject LuaScriptTargetSecond;
   public DynValue Self;
 
   // Start is called before the first frame update
@@ -103,30 +104,25 @@ public class TestMoon : MonoBehaviour
     LuaScript = ScriptLoader.LoadScript();
 
     DynValue luaFactFunction = LuaScript.Globals.Get("make");
-    Self = LuaScript.Call(luaFactFunction,LuaScriptTarget,0.1f);
-
-
-    
-   
-    //Self.Callback.Name("rotateVector",Vector3.up);
-    //LuaScript.Call("make", LuaScriptTarget);
-    // DynValue luaFactFunction = LuaScript.RequireModule("make");
-    //Self = LuaScript.Call(luaFactFunction, LuaScriptTarget);
+    Self = LuaScript.Call(luaFactFunction,LuaScriptTarget,
+        LuaScriptTargetSecond, 0.1f);
 
   }
 
   private void Update()
   {
-    var call = (Closure)Self.Table["rotateVector"];
-    call.Call(Self, Vector3.up);
+    //var call = (Closure)Self.Table["rotateVector"];
+   //call.Call(Self, Vector3.up);
 
-    var rotate = (Closure)Self.Table["rotate"];
-    rotate.Call(Self, Time.deltaTime);
+    //var rotate = (Closure)Self.Table["rotate"];
+    //rotate.Call(Self, Time.deltaTime);
+
+    var rotateSecond = (Closure)Self.Table["rotateSecond"];
+    rotateSecond.Call(Self, Vector3.up);
 
 
-
-    //DynValue luaFactTranslate = LuaScript.RequireModule("rotate");
-    //LuaScript.Call(luaFactTranslate, Time.deltaTime);
+    //var scale = (Closure)Self.Table["scale"];
+    //scale.Call(Self, Vector3.up, Vector3.right);
 
   }
 

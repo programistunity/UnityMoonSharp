@@ -34,12 +34,7 @@ public class ScriptLoader : MonoBehaviour
     ((ScriptLoaderBase) Script.DefaultOptions.ScriptLoader).ModulePaths = paths.ModulePaths;
        
    // Debug.LogError(paths.ModulePaths.Length);
-    foreach (var modulePath in paths.GetLoadedScripts())
-    {
-      Debug.LogError("Path: "+modulePath);
-      
 
-    }
      //   new string[] { "MoonSharp/Scripts/mover/?", "MoonSharp/Scripts/mover/?.txt" };
 
 
