@@ -28,9 +28,49 @@ public class ScriptLoader : MonoBehaviour
 
   public static Script LoadScript()
   {
-    Script script = new Script();
-    script.Options.ScriptLoader = new EmbeddedResourcesScriptLoader();
-    script.DoFile("Lua.txt");
-    return script;
+
+    Script.DefaultOptions.ScriptLoader = new UnityAssetsScriptLoader("MoonSharp/Scripts/Lua");
+    var paths = new UnityAssetsScriptLoader("MoonSharp/Scripts/mover");
+    ((ScriptLoaderBase) Script.DefaultOptions.ScriptLoader).ModulePaths = paths.ModulePaths;
+       
+   // Debug.LogError(paths.ModulePaths.Length);
+    foreach (var modulePath in paths.GetLoadedScripts())
+    {
+      Debug.LogError("Path: "+modulePath);
+      
+
+    }
+     //   new string[] { "MoonSharp/Scripts/mover/?", "MoonSharp/Scripts/mover/?.txt" };
+
+
+
+    var _main = new Script();
+
+    ((ScriptLoaderBase)_main.Options.ScriptLoader).ModulePaths =
+        new string[] { "MoonSharp/Scripts/mover/?", "MoonSharp/Scripts/mover/?.txt" };
+    //paths.ModulePaths;
+    //((ScriptLoaderBase)_main.Options.ScriptLoader).ModulePaths =
+    //   ScriptLoaderBase.UnpackStringPaths("MoonSharp/Scripts/mover/?;MoonSharp/Scripts/mover?.lua");
+
+    // ((ScriptLoaderBase)_main.Options.ScriptLoader).ModulePaths = 
+    //new string[] { "MoonSharp/Scripts/mover/?", "MoonSharp/Scripts/mover/?.lua" };
+    _main.DoFile("Lua");
+  
+    return _main;
   }
+
+  public static Script LoadScript2()
+  {
+    
+    Script.DefaultOptions.ScriptLoader = new UnityAssetsScriptLoader("MoonSharp/Scripts/Test");
+    ((ScriptLoaderBase) Script.DefaultOptions.ScriptLoader).ModulePaths =
+        ScriptLoaderBase.UnpackStringPaths("MoonSharp/Scripts/Test/?;MoonSharp/Scripts/Test/?.txt");
+
+
+    var _main = new Script();
+    _main.DoFile("Test");
+    return _main;
+  }
+
+
 }

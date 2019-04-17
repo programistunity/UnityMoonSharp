@@ -99,59 +99,34 @@ public class TestMoon : MonoBehaviour
     UserData.RegisterType<GameObject>();
     UserData.RegisterType<Vector3>();
     UserData.RegisterType<Transform>();
-    foreach (var rotateObject in RotateObjects)
-    {
-      var script = new Script();
-      script.Globals["mytarget"] = rotateObject;
-      script.Globals["axis"] = Vector3.up;
-      script.Globals["angle"] = 7;
 
-      _globalScripts.Add(script);
-    }
+    LuaScript = ScriptLoader.LoadScript();
 
-    _code = @"
-		x = mytarget.Rotate(axis,angle);";
-
-    Debug.LogError(MoonFact(7));
-    Debug.LogError(UnityFact(7));
-    Debug.LogError(MoonCallUnity(7));
-    MoonRotateTransform(Vector3.up, 7, transform);
-
-
-    LuaScript = ScriptLoader.LoadUnity();
     DynValue luaFactFunction = LuaScript.Globals.Get("make");
-    Self = LuaScript.Call(luaFactFunction, LuaScriptTarget,10.0f);
+    Self = LuaScript.Call(luaFactFunction,LuaScriptTarget,0.1f);
+
+
+    
+   
+    //Self.Callback.Name("rotateVector",Vector3.up);
+    //LuaScript.Call("make", LuaScriptTarget);
+    // DynValue luaFactFunction = LuaScript.RequireModule("make");
+    //Self = LuaScript.Call(luaFactFunction, LuaScriptTarget);
+
   }
 
   private void Update()
   {
-    DynValue luaFactFunction = LuaScript.Globals.Get("rotate");
-    LuaScript.Call(luaFactFunction, Self,Time.deltaTime);
+    var call = (Closure)Self.Table["rotateVector"];
+    call.Call(Self, Vector3.up);
 
-    if (GlobalScripts)
-    {
-      foreach (var script in _globalScripts)
-      {
-        script.DoString(_code);
-      }
+    var rotate = (Closure)Self.Table["rotate"];
+    rotate.Call(Self, Time.deltaTime);
 
-      return;
-    }
 
-    if (MoonRotate)
-    {
-      foreach (var rotateObject in RotateObjects)
-      {
-        MoonRotateTransform2(Vector3.up, 7, rotateObject);
-      }
-    }
-    else
-    {
-      foreach (var rotateObject in RotateObjects)
-      {
-        RotateTransform(Vector3.up, 7, rotateObject);
-      }
-    }
+
+    //DynValue luaFactTranslate = LuaScript.RequireModule("rotate");
+    //LuaScript.Call(luaFactTranslate, Time.deltaTime);
 
   }
 

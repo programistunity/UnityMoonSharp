@@ -1,6 +1,16 @@
-function rotate (self, delta)
+
+local rotate = function(self, delta)
   self._game_object.transform.Rotate(0, 0, self._speed * delta);
 end -- rotate
+
+local translate = function(self, vector)
+    self._game_object.transform.Translate(vector);
+end
+
+local rotateVector= function(self, vector)
+    self._game_object.transform.Rotate(vector);
+end
+
 
 function make (game_object, speed)
   return 
@@ -8,9 +18,9 @@ function make (game_object, speed)
     _game_object = game_object;
     _speed = speed;
 
-    --
-
     rotate = rotate;
+	rotateVector=rotateVector;
+	translate=translate;
   }
 end
 
@@ -20,3 +30,5 @@ return
 {
   make = make;
 }
+
+
