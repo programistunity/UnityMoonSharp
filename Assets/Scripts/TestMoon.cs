@@ -120,6 +120,9 @@ public class TestMoon : MonoBehaviour
     var rotateSecond = (Closure)Self.Table["rotateSecond"];
     rotateSecond.Call(Self, Vector3.up);
 
+    var transformModule = (Closure)Self.Table["transformModule"];
+    transformModule.Call(Self, Vector3.up*Time.deltaTime);
+
 
     //var scale = (Closure)Self.Table["scale"];
     //scale.Call(Self, Vector3.up, Vector3.right);

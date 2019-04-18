@@ -29,8 +29,8 @@ public class ScriptLoader : MonoBehaviour
   public static Script LoadScript()
   {
 
-    Script.DefaultOptions.ScriptLoader = new UnityAssetsScriptLoader("MoonSharp/Scripts/Lua");
-    var paths = new UnityAssetsScriptLoader("MoonSharp/Scripts/mover");
+    Script.DefaultOptions.ScriptLoader = new UnityAssetsScriptLoader("MoonSharp/Scripts/");
+    var paths = new UnityAssetsScriptLoader("MoonSharp/Scripts/");
     ((ScriptLoaderBase) Script.DefaultOptions.ScriptLoader).ModulePaths = paths.ModulePaths;
        
    // Debug.LogError(paths.ModulePaths.Length);
@@ -42,7 +42,7 @@ public class ScriptLoader : MonoBehaviour
     var _main = new Script();
 
     ((ScriptLoaderBase)_main.Options.ScriptLoader).ModulePaths =
-        new string[] { "MoonSharp/Scripts/mover/?", "MoonSharp/Scripts/mover/?.txt" };
+        new string[] { "MoonSharp/Scripts/?", "MoonSharp/Scripts/?.txt" };
     //paths.ModulePaths;
     //((ScriptLoaderBase)_main.Options.ScriptLoader).ModulePaths =
     //   ScriptLoaderBase.UnpackStringPaths("MoonSharp/Scripts/mover/?;MoonSharp/Scripts/mover?.lua");

@@ -1,5 +1,5 @@
 local function translate(self, vector)
-    self._game_object.transform.Translate(vector);
+    self._game_object1.transform.Translate(vector);
 end
 
 return {
